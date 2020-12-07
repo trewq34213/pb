@@ -3,7 +3,7 @@
 ## 【中文版】 (https://github.com/shmilyzxt/pb/blob/main/README_CN.md)
 
 ##  Introduction
-- a wow classic pixel bot 
+- a wow classic pixel bot written by python and lua.
 
 ## Features
 - muti resolution ratio support (1080p,4K,...)
