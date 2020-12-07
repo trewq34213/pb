@@ -1,0 +1,139 @@
+<!--https://element.eleme.cn/-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>运行信息</title>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css',_external=True) }}">
+    <!-- import Vue before Element -->
+    <script rel="stylesheet" src="{{ url_for('static',filename='jquery.min.js') }}"></script>
+    <!--<style>
+        #hor-minimalist-b{
+            width: 33%;
+        }
+    </style>-->
+<body>
+<div id="app">
+    <table id="hor-minimalist-b" style="display: inline">
+        <thead>
+        <tr>
+            <th scope="col" colspan="2" align="center">玩家信息</th>
+        </tr>
+        </thead>
+        <tbody id="player"></tbody>
+    </table>
+    <table id="hor-minimalist-b" style="display: inline">
+        <thead>
+        <tr>
+            <th scope="col" colspan="2" align="center">目标信息</th>
+        </tr>
+        </thead>
+        <tbody id="target"></tbody>
+    </table>
+    <table id="hor-minimalist-b" style="display: inline">
+        <thead>
+        <tr>
+            <th scope="col" colspan="1" align="center">按键记录</th>
+        </tr>
+        </thead>
+        <tbody id="keys"></tbody>
+    </table>
+    <table id="hor-minimalist-b" style="display: inline">
+        <thead>
+        <tr>
+            <th scope="col" colspan="6" align="center">背包物品</th>
+        </tr>
+        <tr>
+            <th scope="col">物品ID</th>
+            <th scope="col">物品名称</th>
+            <th scope="col">数量</th>
+            <th scope="col">背包编号</th>
+            <th scope="col">背包位置</th>
+            <th scope="col">售价</th>
+        </tr>
+        </thead>
+        <tbody id="bagitem"></tbody>
+    </table>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        getKeys()
+        getInfo()
+    });
+
+    setInterval(getInfo, 3000);
+    setInterval(getKeys, 2000);
+
+    function getInfo() {
+        $.getJSON("/info", "", function (data) {
+            if (data.code == '200') {
+                var player = data.player;
+                var target = data.t;
+                var bag = data.bag;
+
+                var playerTr = '';
+                for (var i in player) {
+                    if (i != "status") {
+                        playerTr += '<tr><td>' + i + '</td><td>' + player[i] + '</td></tr>';
+                    } else {
+                        for (var pst in player['status']) {
+                            playerTr += '<tr><td>' + pst + '</td><td>' + player["status"][pst] + '</td></tr>';
+                        }
+                    }
+                }
+                $("#player").html(playerTr);
+
+                var targetTr = '';
+                for (var t in target) {
+                    if (t != "status") {
+                        targetTr += '<tr><td>' + t + '</td><td>' + target[t] + '</td></tr>';
+                    } else {
+                        for (var st in target['status']) {
+                            targetTr += '<tr><td>' + st + '</td><td>' + target["status"][st] + '</td></tr>';
+                        }
+                    }
+                }
+                $("#target").html(targetTr);
+
+                var bagTr = '';
+                for (var b in bag) {
+                    var q = bag[b]["qulity"];
+                    var color = "grey";
+                    if (q == 1) {
+                        color = "black";
+                    } else if (q == 2) {
+                        color = "green";
+                    } else if (q == 3) {
+                        color = "blue";
+                    } else if (q == 4) {
+                        color = "purple";
+                    } else if (q == 5) {
+                        color = "orange";
+                    }
+                    bagTr += '<tr><td>' + bag[b]["id"] + '</td>' +
+                        '<td><span style="color:' + color + '">' + bag[b]["name"] + '</span></td>' +
+                        '<td>' + bag[b]["count"] + '</td>' +
+                        '<td>' + bag[b]["bag"] + '</td>' +
+                        '<td>' + bag[b]["slot"] + '</td>' +
+                        '<td>' + bag[b]["price"] + '</td></tr>';
+                }
+                $("#bagitem").html(bagTr)
+            }
+        })
+    }
+
+    function getKeys() {
+        $.getJSON("/keys", "", function (data) {
+            if (data.code == '200') {
+                var html = "";
+                for (var i in data.records){
+                    html += '<tr><td>' + data.records[i] + '</td></tr>'
+                }
+                $("#keys").html(html)
+            }
+        });
+    }
+</script>
+</html>
