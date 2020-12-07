@@ -29,7 +29,7 @@
 - codeing your own combat loop,for example：run\combat\QS.py
 - in game,put your character in the area, and run run\combat\QS.py,enjoy!
 
-## Code structure introduce
+## Project structure introduce
 - addon: the addon
 - lib: system folder
     + base ：base
