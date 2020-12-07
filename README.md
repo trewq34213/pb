@@ -1,6 +1,6 @@
 # wow classic bot
 
-## 【中文版】 (https://github.com/shmilyzxt/pb/README_CN.md)
+## 【中文版】 (https://github.com/shmilyzxt/pb/blob/main/README_CN.md)
 
 ##  Introduction
 - a wow classic pixel bot 
